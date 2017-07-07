@@ -12,6 +12,7 @@ app.set('views', __dirname + '/public');
 var server =  http.createServer(app);
 var io = socketIo.listen(server);
 server.listen(8081);
+
 // add directory with our static files
 var array = [];
 app.use(express.static(__dirname + '/public'));
@@ -34,14 +35,14 @@ console.log("Server running on 127.0.0.1:8081");
  });
 
 //get the ip address of host machine by pinging the server
-function GetIP(yourUrl){
-    XMLHttpRequest = require("xmlhttprequest").XMLHttpRequest;
-    var httpreq = new XMLHttpRequest();
-    httpreq.open("GET",yourUrl,false);
-    httpreq.send(null);
-    var obj = JSON.parse(httpreq.responseText);
-    return obj.ip;       
-}
+// function GetIP(yourUrl){
+    // XMLHttpRequest = require("xmlhttprequest").XMLHttpRequest;
+    // var httpreq = new XMLHttpRequest();
+    // httpreq.open("GET",yourUrl,false);
+    // httpreq.send(null);
+    // var obj = JSON.parse(httpreq.responseText);
+    // return obj.ip;       
+// }
 
 //creates URL for sharing
 app.post('/createUrl',function(req,res){
@@ -76,8 +77,7 @@ io.on('connection', function (socket) {
 
     //listens to the undo click from client 
     socket.on('undo_called_client',function(data)
-    {     
-        console.log(line_history); 
+    {      
         //remove the line from the line history
         if(line_history.length>0)
         {
