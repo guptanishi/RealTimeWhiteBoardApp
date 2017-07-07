@@ -1,12 +1,16 @@
 var express = require('express'), 
     app = express(),
     http = require('http'),
-    socketIo = require('socket.io');
+    socketIo = require('socket.io'),
+	mustache = require('mustache'),
+	engines = require('consolidate');
     
 var fs = require('fs');
 var shortid = require('shortid');
 
 app.set('views', __dirname + '/public');
+app.engine('html', engines.mustache);
+app.set('view engine', 'html');
 
 // start webserver on port 8081
 var server =  http.createServer(app);
@@ -23,12 +27,16 @@ console.log("Server running on 127.0.0.1:8081");
      fs.readFile('abc.txt', function (err, data) {
       if (err) throw err;
       if(data.indexOf(req.params.id) >= 0){
-       res.redirect('/');
+         res.redirect('/share');
       }else{
         res.redirect('/404');
       }
     });
    });
+   
+ app.get('/share',function(req,res,next){
+     res.render('index.html');
+ })
  
  app.get('/404',function(req,res,next){
    res.render('404.html',  { title: 'Hey', message: 'Hello there!' });
