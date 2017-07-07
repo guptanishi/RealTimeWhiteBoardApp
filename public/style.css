@@ -1,0 +1,46 @@
+* { 
+   margin: 0;
+   padding: 0;
+}
+body, html{
+   width: 100%;
+   height: 100%;
+}
+#canvas {
+   display: block;
+}
+body {margin:0}
+
+.icon-bar {
+   font-family: sans-serif;
+    background: darkgray;
+    padding: 2px;
+    width: 50px;
+    z-index: 100;
+    position: fixed;
+    }
+
+.icon-bar a {
+    display: block;
+    text-align: left;
+    padding: 0;
+    transition: all 0.3s ease;
+    color: white;
+}
+
+.icon-bar a:hover {
+    background-color: #000;
+}
+
+.active {
+    background-color: #4CAF50 !important;
+}
+.button_style{
+    width: 50px;
+    height: 50px;
+}
+.parent-div{
+    float: left;
+    align-content: horizontal;
+}
+
