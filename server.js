@@ -34,15 +34,6 @@ console.log("Server running on 127.0.0.1:8081");
    res.render('404.html',  { title: 'Hey', message: 'Hello there!' });
  });
 
-//get the ip address of host machine by pinging the server
-// function GetIP(yourUrl){
-    // XMLHttpRequest = require("xmlhttprequest").XMLHttpRequest;
-    // var httpreq = new XMLHttpRequest();
-    // httpreq.open("GET",yourUrl,false);
-    // httpreq.send(null);
-    // var obj = JSON.parse(httpreq.responseText);
-    // return obj.ip;       
-// }
 
 //creates URL for sharing
 app.post('/createUrl',function(req,res){
@@ -51,9 +42,6 @@ app.post('/createUrl',function(req,res){
     fs.appendFile('abc.txt', tempD+"\n", function (err) {
     if (err) throw err;
     res.send(req.protocol + '://' + req.get('host') +'/share/'+tempD);
-    //to generate ip of server in url
-    //var myIP = GetIP('http://freegeoip.net/json/');
-    //res.send(req.protocol + '://'+myIP+':'+server.address().port+'/share/'+tempD);
   });
 });
 // array of all lines drawn
@@ -77,7 +65,7 @@ io.on('connection', function (socket) {
 
     //listens to the undo click from client 
     socket.on('undo_called_client',function(data)
-    {      
+    {     	 
         //remove the line from the line history
         if(line_history.length>0)
         {
@@ -103,25 +91,3 @@ io.on('connection', function (socket) {
     });
 
 });
-
-// io.on('connection',function(socket){
-
-//     socket.on('undo_called',function(data)
-//     { if(line_history.length>0){
-//         var tempcolor=line_history[line_history.length-1].color;
-//         for(var i=line_history.length-1; i>=0; i--)
-//         {
-//             if(line_history[i].color==tempcolor)
-//             {
-//                 line_history.pop();
-//             }
-//         }
-//         for (var i in line_history) 
-//         {
-//             io.emit('draw_line', { line: line_history[i].line , color : line_history[i].color  });
-//             console.log(i);
-//         }
-//     }
-
-//     });
-// });
