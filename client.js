@@ -4,16 +4,17 @@ var colorRed = "#ff0000";
 var colorBlack = "#000000";
 var curColor=colorBlack;
 var restorePoints = [];
+var sessionid;
 
-document.addEventListener("DOMContentLoaded", function() {
-   var mouse = { 
+$(document).ready(function() {
+var mouse = { 
       click: false,
       move: false,
       pos: {x:0, y:0},
       pos_prev: false
    };
    // get canvas element and create context
-   var canvas  = document.getElementById('drawing');
+   var canvas  = $("#drawing")[0];
    var context = canvas.getContext('2d');
    var width   = window.innerWidth;
    var height  = window.innerHeight;
@@ -28,12 +29,18 @@ document.addEventListener("DOMContentLoaded", function() {
    //made the cursor as crosswire
    canvas.style.cursor="crosshair";
 
+   //gets the client id of the client itself
+   var socket = io.connect();
+   socket.on('connect', function() {
+      sessionid = socket.io.engine.id;
+   });
+
    // register mouse event handlers
    canvas.onmousedown = function(e){ 
       mouse.click = true; };
 
    canvas.onmouseup = function(e){
-      socket.emit('draw_line', { line: null, color : null});
+      socket.emit('draw_line', { line: null, color : null , clientid:sessionid});
       mouse.click = false;
    };
 
@@ -64,7 +71,7 @@ document.addEventListener("DOMContentLoaded", function() {
       // check if the user is drawing
       if (mouse.click && mouse.move && mouse.pos_prev) {
          // send line to to the server
-         socket.emit('draw_line', { line: [ mouse.pos, mouse.pos_prev] , color : curColor});       
+         socket.emit('draw_line', { line: [ mouse.pos, mouse.pos_prev] , color : curColor, clientid:sessionid});       
          mouse.move = false;
       }
       mouse.pos_prev = {x: mouse.pos.x, y: mouse.pos.y};
@@ -72,25 +79,24 @@ document.addEventListener("DOMContentLoaded", function() {
    }
 
    //select red color when button clicked
-   $('#red').get(0).addEventListener('click', function(e) {
+   $('#red').click(function(e) {
          curColor=colorRed;         
          buttonstyle(document.getElementById('red'),"black","double","15");        
          buttonstyle(document.getElementById('blue'),"none","none");             
-      }, false);
-
+      });
 
    //select green color when button clicked
-   $('#blue').get(0).addEventListener('click', function(e) {
+   $('#blue').click(function(e) {
          curColor=colorBlue;
          buttonstyle(document.getElementById('blue'),"black","double","15");
          buttonstyle(document.getElementById('red'),"none","none");       
-      }, false);
+      });
 
    //fires when button undo is clicked
-   $('#undo').get(0).addEventListener('click', function(e) {
+   $('#undo').click(function(e) {
       //inform server undo was hit
-      socket.emit('undo_called_client',{});
-   }, false);
+      socket.emit('undo_called_client',{clientid:sessionid});
+   });
 
    //listen to undo from server 
    socket.on('undo_called_server',function(data){
