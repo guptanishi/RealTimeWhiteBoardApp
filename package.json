@@ -3,12 +3,11 @@
    "description": "Collaborative drawing canvas",
    "author": "Code-and.Coffee",
    "dependencies": {
+      "client-sessions": "^0.8.0",
       "consolidate": "^0.14.5",
       "express": "4.x",
-      "express-session": "^1.15.3",
       "jquery": "^3.2.1",
       "mustache": "^2.3.0",
-      "node-session": "^1.2.1",
       "shortid": "^2.2.8",
       "socket.io": "*",
       "xmldom": "^0.1.27",
